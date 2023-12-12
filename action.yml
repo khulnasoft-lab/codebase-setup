@@ -1,0 +1,27 @@
+name: "Setup codebase"
+description: "🐶 This action sets up codebase"
+inputs:
+  codebase_version:
+    description: "codebase version. [latest,nightly,vX.Y.Z]"
+    default: "latest"
+runs:
+  using: "composite"
+  steps:
+    - name: install codebase
+      run: |
+        set -eu
+        "$GITHUB_ACTION_PATH/install.sh"
+      shell: sh
+      env:
+        CODEBASE_VERSION: ${{ inputs.codebase_version }}
+        CODEBASE_TEMPDIR: ${{ runner.temp }}
+    - name: check codebase is successfully installed
+      run: |
+        set -eu
+        "$GITHUB_ACTION_PATH/check-installed.sh"
+      shell: sh
+
+# Ref: https://haya14busa.github.io/github-action-brandings/
+branding:
+  icon: "terminal"
+  color: "gray-dark"
