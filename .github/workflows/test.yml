@@ -1,0 +1,40 @@
+name: Test
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+jobs:
+  test:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install codebase (default)
+        uses: ./
+      - run: codebase -version
+
+      - name: install codebase (nightly)
+        uses: ./
+        with:
+          codebase_version: nightly
+      - run: codebase -version | grep nightly
+
+      - name: install codebase (with codebase_version)
+        uses: ./
+        with:
+          codebase_version: v0.10.0
+      - run: test "$(codebase -version)" = '0.10.0'
+
+  container:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install codebase
+        uses: ./
+      - run: codebase -version
