@@ -19,7 +19,7 @@ if [ "${VERSION}" = 'nightly' ]; then
   VERSION='latest'
 fi
 
-mkdir -p "${TEMP}/khulnasoft/bin"
+mkdir -p "${TEMP}/codebase/bin"
 
 echo '::group::🐶 Installing codebase ... https://github.com/khulnasoft/codebase'
 (
